@@ -1,6 +1,6 @@
 
-##Creating a Bucket
-POST http://localhost:5000/s3Bucket/Create/demofileupload-1
+# ##Creating a Bucket
+# POST http://localhost:5000/s3Bucket/Create/demofileupload-1
 
 
 ##Adding File to Bucket

@@ -7,6 +7,7 @@ using Amazon.S3.Model;
 using Amazon.S3.Util;
 using System.Collections.Generic;
 using Amazon.Runtime;
+using System.IO;
 
 namespace FileUpload.Controllers
 {
@@ -24,27 +25,59 @@ namespace FileUpload.Controllers
         public async Task AddFileAsync(string bucketName)
         {
 
-            try{
-                Console.WriteLine("Uploading....");
+            List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
 
-                var fileTransferUtility = new TransferUtility(_s3Client);
+            InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
+            {
+                BucketName = bucketName,
+                Key = keyName
+            };
 
-                var fileTransferUtilityRequest = new TransferUtilityUploadRequest
+            InitiateMultipartUploadResponse initResponse =
+                await _s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+            long contentLength = new FileInfo(Path).Length;
+            long partSize = 30 * (long)Math.Pow(2, 20);
+
+            try
+            {
+                Console.WriteLine("Uploading parts....");
+        
+                long filePosition = 0;
+                for (int i = 1; filePosition < contentLength; i++)
                 {
-                    BucketName = bucketName,
-                    FilePath = Path,
-                    StorageClass = S3StorageClass.Standard,
-                    PartSize = 20291456,
-                    Key = keyName,
-                    CannedACL = S3CannedACL.NoACL
-                };
+                    UploadPartRequest uploadRequest = new UploadPartRequest
+                        {
+                            BucketName = bucketName,
+                            Key = keyName,
+                            UploadId = initResponse.UploadId,
+                            PartNumber = i,
+                            PartSize = partSize,
+                            FilePosition = filePosition,
+                            FilePath = Path
+                        };
 
-                fileTransferUtilityRequest.Metadata.Add("param1", "Value1");
-                fileTransferUtilityRequest.Metadata.Add("param2", "Value2");
+                    uploadRequest.StreamTransferProgress +=
+                        new EventHandler<StreamTransferProgressArgs>(UploadPartProgress);
 
-                await fileTransferUtility.UploadAsync(fileTransferUtilityRequest);
+                    uploadResponses.Add(await _s3Client.UploadPartAsync(uploadRequest));
 
-                Console.WriteLine("Upload Completed");
+                    filePosition += partSize;
+                }
+
+                CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
+                    {
+                        BucketName = bucketName,
+                        Key = keyName,
+                        UploadId = initResponse.UploadId
+                     };
+
+                completeRequest.AddPartETags(uploadResponses);
+
+                CompleteMultipartUploadResponse completeUploadResponse =
+                    await _s3Client.CompleteMultipartUploadAsync(completeRequest);
+
+                Console.WriteLine("Successfully Uploaded");
 
             }catch (AmazonS3Exception e){
                 Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
@@ -54,9 +87,8 @@ namespace FileUpload.Controllers
             }
         }
 
-        public static void UploadPartProgressEventCallback(object sender, StreamTransferProgressArgs e)
+        public static void UploadPartProgress(object sender, StreamTransferProgressArgs e)
         {
-            // Process event. 
             Console.WriteLine("{0}/{1}", e.TransferredBytes, e.TotalBytes);
         }
         public async Task<S3Response> CreateBucketAsync(string bucketName)
