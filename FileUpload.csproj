@@ -10,7 +10,7 @@
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.1" />
     <PackageReference Include="AWSSDK.S3" Version="3.7.5" />
     <PackageReference Include="AWSSDK.S3Control" Version="3.7.4" />
-    <PackageReference Include="Unity.WebAPI" Version="5.4.0" />
+    <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
 
 

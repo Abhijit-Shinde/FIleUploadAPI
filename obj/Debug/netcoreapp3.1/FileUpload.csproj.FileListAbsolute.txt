@@ -23,10 +23,5 @@ D:\FileUpload\bin\Debug\netcoreapp3.1\AWSSDK.Extensions.NETCore.Setup.dll
 D:\FileUpload\bin\Debug\netcoreapp3.1\AWSSDK.S3.dll
 D:\FileUpload\obj\Debug\netcoreapp3.1\FileUpload.csproj.CopyComplete
 D:\FileUpload\bin\Debug\netcoreapp3.1\AWSSDK.S3Control.dll
-D:\FileUpload\bin\Debug\netcoreapp3.1\System.Net.Http.Formatting.dll
-D:\FileUpload\bin\Debug\netcoreapp3.1\System.Web.Http.dll
-D:\FileUpload\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
-D:\FileUpload\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
 D:\FileUpload\bin\Debug\netcoreapp3.1\Unity.Abstractions.dll
 D:\FileUpload\bin\Debug\netcoreapp3.1\Unity.Container.dll
-D:\FileUpload\bin\Debug\netcoreapp3.1\Unity.WebApi.dll

@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Amazon.S3;
-using Amazon.S3.Transfer;
 using Amazon.S3.Model;
 using Amazon.S3.Util;
 using System.Collections.Generic;
@@ -83,14 +82,22 @@ namespace FileUpload.Controllers
                 Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
             }
             catch (Exception e){
-                Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
+                Console.WriteLine("An AmazonS3Exception was thrown: {0}", e.Message);
+
+                AbortMultipartUploadRequest abortMPURequest = new AbortMultipartUploadRequest
+                {
+                    BucketName = bucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId
+                };
+               await _s3Client.AbortMultipartUploadAsync(abortMPURequest);
             }
 
         }
 
         public static void UploadPartProgress(object sender, StreamTransferProgressArgs e)
         {
-            Console.WriteLine("{0}/{1}", e.TransferredBytes, e.TotalBytes);
+            Console.WriteLine("{0}/{1}, {2}% done", e.TransferredBytes, e.TotalBytes, e.PercentDone);
         }
 
         public async Task<S3Response> CreateBucketAsync(string bucketName)

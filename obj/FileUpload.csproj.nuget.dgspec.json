@@ -52,9 +52,9 @@
               "target": "Package",
               "version": "[3.7.4, )"
             },
-            "Unity.WebAPI": {
+            "Unity": {
               "target": "Package",
-              "version": "[5.4.0, )"
+              "version": "[5.11.10, )"
             }
           },
           "imports": [
