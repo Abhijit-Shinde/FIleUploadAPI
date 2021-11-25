@@ -24,7 +24,6 @@ namespace FileUpload.Controllers
 
         public async Task AddFileAsync(string bucketName)
         {
-
             List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
 
             InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
@@ -41,8 +40,6 @@ namespace FileUpload.Controllers
 
             try
             {
-                Console.WriteLine("Uploading parts....");
-        
                 long filePosition = 0;
                 for (int i = 1; filePosition < contentLength; i++)
                 {
@@ -66,18 +63,21 @@ namespace FileUpload.Controllers
                 }
 
                 CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
-                    {
-                        BucketName = bucketName,
-                        Key = keyName,
-                        UploadId = initResponse.UploadId
-                     };
+                {
+                    BucketName = bucketName,
+                    Key = keyName,
+                    UploadId = initResponse.UploadId
+                };
 
                 completeRequest.AddPartETags(uploadResponses);
 
                 CompleteMultipartUploadResponse completeUploadResponse =
                     await _s3Client.CompleteMultipartUploadAsync(completeRequest);
-
-                Console.WriteLine("Successfully Uploaded");
+                
+                Console.WriteLine("************************");
+                Console.WriteLine("Location : {0}",completeUploadResponse.Location);
+                Console.WriteLine("ETag : {0}",completeUploadResponse.ETag);
+                Console.WriteLine("File uploaded to S3");
 
             }catch (AmazonS3Exception e){
                 Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
@@ -85,15 +85,18 @@ namespace FileUpload.Controllers
             catch (Exception e){
                 Console.WriteLine("Unknown encountered on server. Message:'{0}' when writing an object", e.Message);
             }
+
         }
 
         public static void UploadPartProgress(object sender, StreamTransferProgressArgs e)
         {
             Console.WriteLine("{0}/{1}", e.TransferredBytes, e.TotalBytes);
         }
+
         public async Task<S3Response> CreateBucketAsync(string bucketName)
         {
-            try{
+            try
+            {
                 if(await AmazonS3Util.DoesS3BucketExistV2Async(_s3Client,bucketName) == false)
                 {
                     var putBucketRequest = new PutBucketRequest
@@ -101,7 +104,9 @@ namespace FileUpload.Controllers
                         BucketName = bucketName,
                         UseClientRegion = true
                     };
+
                     var response = await _s3Client.PutBucketAsync(putBucketRequest);
+
                     return new S3Response
                     {
                         Status = response.HttpStatusCode,

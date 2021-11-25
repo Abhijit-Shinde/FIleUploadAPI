@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FileUpload.Controllers
 {
     [ApiController]
-    [Route("s3Bucket")]
+    [Route("s3")]
     public class UploadFileController : ControllerBase
     {
         private readonly IS3Service _service;
