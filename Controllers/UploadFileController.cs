@@ -1,3 +1,5 @@
+using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +29,14 @@ namespace FileUpload.Controllers
         [Route("AddFile")]
         public async Task<IActionResult> AddFile(string bucketName, IFormFile file)
         {
-            var response = await _service.AddFileAsync(bucketName, file);
-            return Ok(response);
+            try{
+                var response = await _service.AddFileAsync(bucketName, file);
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

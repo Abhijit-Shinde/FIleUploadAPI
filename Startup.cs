@@ -28,6 +28,7 @@ namespace FileUpload
             //Services
             services.AddSingleton<IS3Service,S3Service>();
 
+            //Multipart Limit
             services.Configure<FormOptions>(x =>
             {
                 x.ValueLengthLimit = int.MaxValue;

@@ -15,8 +15,6 @@ namespace FileUpload.Controllers
     {
         private readonly IAmazonS3 _s3Client;
         private const string keyName = "MultipartUpload";
-        private const string Path = "D:\\FileUpload\\Sample.csv";
-
         public S3Service(IAmazonS3 s3Client)
         {
             _s3Client = s3Client;
@@ -134,11 +132,11 @@ namespace FileUpload.Controllers
                     };
                 }
             }
-            catch(AmazonS3Exception e)
+            catch(Exception e)
             {
                 return new S3Response
                 {
-                    Status = e.StatusCode,
+                    Status = HttpStatusCode.InternalServerError,
                     Message = e.Message
                 };
             }
