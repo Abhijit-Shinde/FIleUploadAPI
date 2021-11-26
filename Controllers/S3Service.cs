@@ -33,7 +33,9 @@ namespace FileUpload.Controllers
             InitiateMultipartUploadResponse initResponse =
                 await _s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
-            file.OpenReadStream();
+            byte[] fileBytes = new Byte[file.Length];
+            file.OpenReadStream().Read(fileBytes, 0, Int32.Parse(file.Length.ToString()));
+            
             long contentLength = new FileInfo(file.FileName).Length;
             long partSize = 30 * (long)Math.Pow(2, 20);
 
