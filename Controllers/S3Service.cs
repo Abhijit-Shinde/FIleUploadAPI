@@ -7,6 +7,7 @@ using Amazon.S3.Util;
 using System.Collections.Generic;
 using Amazon.Runtime;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace FileUpload.Controllers
 {
@@ -21,7 +22,7 @@ namespace FileUpload.Controllers
             _s3Client = s3Client;
         }
 
-        public async Task<S3Response> AddFileAsync(string bucketName)
+        public async Task<S3Response> AddFileAsync(string bucketName, IFormFile file)
         {
             List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
 
@@ -34,7 +35,8 @@ namespace FileUpload.Controllers
             InitiateMultipartUploadResponse initResponse =
                 await _s3Client.InitiateMultipartUploadAsync(initiateRequest);
 
-            long contentLength = new FileInfo(Path).Length;
+            file.OpenReadStream();
+            long contentLength = new FileInfo(file.FileName).Length;
             long partSize = 30 * (long)Math.Pow(2, 20);
 
             try
@@ -50,7 +52,7 @@ namespace FileUpload.Controllers
                             PartNumber = i,
                             PartSize = partSize,
                             FilePosition = filePosition,
-                            FilePath = Path
+                            FilePath = file.FileName
                         };
 
                     uploadRequest.StreamTransferProgress +=
@@ -75,7 +77,7 @@ namespace FileUpload.Controllers
 
                 return new S3Response {
                     Status = HttpStatusCode.OK,
-                    Message = "File uploaded to S3"
+                    Message = "File uploaded to S3",
                     Location = completeUploadResponse.Location,
                     ETag = completeUploadResponse.ETag,
                 };    

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileUpload.Controllers
@@ -14,18 +15,19 @@ namespace FileUpload.Controllers
         }
 
         [HttpPost]
-        [Route("Create/{bucketName}")]
-        public async Task<IActionResult> CreateBucket([FromRoute] string bucketName)
+        [Route("Create")]
+        public async Task<IActionResult> CreateBucket(string bucketName)
         {
             var response = await _service.CreateBucketAsync(bucketName);
             return Ok(response);
         }
 
         [HttpPost]
-        [Route("AddFile/{bucketName}")]
-        public async Task<IActionResult> AddFile([FromRoute] string bucketName)
+        [RequestSizeLimit(10000000000)]
+        [Route("AddFile")]
+        public async Task<IActionResult> AddFile(string bucketName, IFormFile file)
         {
-            var response = await _service.AddFileAsync(bucketName);
+            var response = await _service.AddFileAsync(bucketName, file);
             return Ok(response);
         }
     }

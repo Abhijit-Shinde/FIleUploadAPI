@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "SCj14Z3mU3E/hk/TLeqZdsPD9kJLmCu8gw2HyyzBrUzVfVEPITAvuroOTAfqtNxCd/qI1JyLC1i7UdWf7hm9Og==",
+  "dgSpecHash": "TeklbannWDuPp9XQ2wWK687YkaUCJocCl2BbhP8WrhO0wx7YHmHfD83d3NhKUWpf4YTBUdiJrbvIDNofMkx+3w==",
   "success": true,
   "projectFilePath": "D:\\FileUpload\\FileUpload.csproj",
   "expectedPackageFiles": [
@@ -8,10 +8,16 @@
     "C:\\Users\\shind\\.nuget\\packages\\awssdk.extensions.netcore.setup\\3.7.1\\awssdk.extensions.netcore.setup.3.7.1.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\awssdk.s3\\3.7.5\\awssdk.s3.3.7.5.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\awssdk.s3control\\3.7.4\\awssdk.s3control.3.7.4.nupkg.sha512",
+    "C:\\Users\\shind\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\2.0.0\\microsoft.extensions.configuration.abstractions.2.0.0.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\2.0.0\\microsoft.extensions.dependencyinjection.abstractions.2.0.0.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\2.0.0\\microsoft.extensions.logging.abstractions.2.0.0.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\microsoft.extensions.primitives\\2.0.0\\microsoft.extensions.primitives.2.0.0.nupkg.sha512",
+    "C:\\Users\\shind\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\shind\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\shind\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\shind\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\shind\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.2\\system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
     "C:\\Users\\shind\\.nuget\\packages\\unity\\5.11.10\\unity.5.11.10.nupkg.sha512"
   ],

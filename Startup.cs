@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Amazon.S3;
 using FileUpload.Controllers;
+using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace FileUpload
 {
@@ -26,6 +28,12 @@ namespace FileUpload
             //Services
             services.AddSingleton<IS3Service,S3Service>();
 
+            services.Configure<FormOptions>(x =>
+            {
+                x.ValueLengthLimit = int.MaxValue;
+                x.MultipartBodyLengthLimit = 10000000000; // In case of multipart
+            });
+
             //CORS
             services.AddCors(options =>
             {
@@ -34,6 +42,12 @@ namespace FileUpload
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             });
+
+            //Swagger
+            services.AddSwaggerGen(c =>  
+            {  
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FileUpload"});  
+            }); 
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,6 +64,9 @@ namespace FileUpload
             app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json","Api v1"));
 
             app.UseEndpoints(endpoints =>
             {

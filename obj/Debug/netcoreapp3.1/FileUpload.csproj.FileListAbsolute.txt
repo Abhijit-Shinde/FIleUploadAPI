@@ -25,3 +25,8 @@ D:\FileUpload\obj\Debug\netcoreapp3.1\FileUpload.csproj.CopyComplete
 D:\FileUpload\bin\Debug\netcoreapp3.1\AWSSDK.S3Control.dll
 D:\FileUpload\bin\Debug\netcoreapp3.1\Unity.Abstractions.dll
 D:\FileUpload\bin\Debug\netcoreapp3.1\Unity.Container.dll
+D:\FileUpload\bin\Debug\netcoreapp3.1\Microsoft.OpenApi.dll
+D:\FileUpload\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.Swagger.dll
+D:\FileUpload\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\FileUpload\bin\Debug\netcoreapp3.1\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\FileUpload\obj\Debug\netcoreapp3.1\FileUpload.MvcApplicationPartsAssemblyInfo.cs
