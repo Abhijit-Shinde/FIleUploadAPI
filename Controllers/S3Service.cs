@@ -21,7 +21,7 @@ namespace FileUpload.Controllers
             _s3Client = s3Client;
         }
 
-        public async Task AddFileAsync(string bucketName)
+        public async Task<S3Response> AddFileAsync(string bucketName)
         {
             List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
 
@@ -72,14 +72,20 @@ namespace FileUpload.Controllers
 
                 CompleteMultipartUploadResponse completeUploadResponse =
                     await _s3Client.CompleteMultipartUploadAsync(completeRequest);
-                
-                Console.WriteLine("************************");
-                Console.WriteLine("Location : {0}",completeUploadResponse.Location);
-                Console.WriteLine("ETag : {0}",completeUploadResponse.ETag);
-                Console.WriteLine("File uploaded to S3");
+
+                return new S3Response {
+                    Status = HttpStatusCode.OK,
+                    Message = "File uploaded to S3"
+                    Location = completeUploadResponse.Location,
+                    ETag = completeUploadResponse.ETag,
+                };    
 
             }catch (AmazonS3Exception e){
-                Console.WriteLine("Error encountered on server. Message:'{0}' when writing an object", e.Message);
+                return new S3Response
+                {
+                    Status = e.StatusCode,
+                    Message = e.Message
+                };
             }
             catch (Exception e){
                 Console.WriteLine("An AmazonS3Exception was thrown: {0}", e.Message);
@@ -92,6 +98,11 @@ namespace FileUpload.Controllers
                 };
                await _s3Client.AbortMultipartUploadAsync(abortMPURequest);
             }
+
+            return new S3Response {
+                Status = HttpStatusCode.InternalServerError,
+                Message = "Error. Failed to upload File"
+            };
 
         }
 

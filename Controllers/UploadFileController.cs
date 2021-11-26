@@ -25,8 +25,8 @@ namespace FileUpload.Controllers
         [Route("AddFile/{bucketName}")]
         public async Task<IActionResult> AddFile([FromRoute] string bucketName)
         {
-            await _service.AddFileAsync(bucketName);
-            return Ok();
+            var response = await _service.AddFileAsync(bucketName);
+            return Ok(response);
         }
     }
 }

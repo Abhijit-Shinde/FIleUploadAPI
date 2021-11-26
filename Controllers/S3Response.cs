@@ -5,5 +5,7 @@ namespace FileUpload.Controllers
     {
         public HttpStatusCode Status { get; set; }
         public string Message { get; set; }
+        public string Location { get; set; }
+        public string ETag { get; set; }
     }
 }
