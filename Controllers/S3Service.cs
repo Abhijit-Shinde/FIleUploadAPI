@@ -14,7 +14,6 @@ namespace FileUpload.Controllers
     public class S3Service : IS3Service
     {
         private readonly IAmazonS3 _s3Client;
-        private const string keyName = "MultipartUpload";
         public S3Service(IAmazonS3 s3Client)
         {
             _s3Client = s3Client;
@@ -24,14 +23,32 @@ namespace FileUpload.Controllers
         {
             List<UploadPartResponse> uploadResponses = new List<UploadPartResponse>();
 
+            if(bucketName == null || bucketName.Length == 0)
+            {
+                return new S3Response
+                {
+                    Status = HttpStatusCode.BadRequest,
+                    Message = "Bucket name is required"
+                };
+            }
+
             InitiateMultipartUploadRequest initiateRequest = new InitiateMultipartUploadRequest
             {
                 BucketName = bucketName,
-                Key = keyName
+                Key = file.FileName
             };
 
             InitiateMultipartUploadResponse initResponse =
                 await _s3Client.InitiateMultipartUploadAsync(initiateRequest);
+
+            if(file == null || file.Length == 0)
+            {
+                return new S3Response
+                {
+                    Status = HttpStatusCode.BadRequest,
+                    Message = "File is null or empty"
+                };
+            }
 
             byte[] fileBytes = new Byte[file.Length];
             file.OpenReadStream().Read(fileBytes, 0, Int32.Parse(file.Length.ToString()));
@@ -47,7 +64,7 @@ namespace FileUpload.Controllers
                     UploadPartRequest uploadRequest = new UploadPartRequest
                         {
                             BucketName = bucketName,
-                            Key = keyName,
+                            Key = file.FileName,
                             UploadId = initResponse.UploadId,
                             PartNumber = i,
                             PartSize = partSize,
@@ -66,7 +83,7 @@ namespace FileUpload.Controllers
                 CompleteMultipartUploadRequest completeRequest = new CompleteMultipartUploadRequest
                 {
                     BucketName = bucketName,
-                    Key = keyName,
+                    Key = file.FileName,
                     UploadId = initResponse.UploadId
                 };
 
@@ -95,7 +112,7 @@ namespace FileUpload.Controllers
                 AbortMultipartUploadRequest abortMPURequest = new AbortMultipartUploadRequest
                 {
                     BucketName = bucketName,
-                    Key = keyName,
+                    Key = file.FileName,
                     UploadId = initResponse.UploadId
                 };
                await _s3Client.AbortMultipartUploadAsync(abortMPURequest);
@@ -134,19 +151,19 @@ namespace FileUpload.Controllers
                     };
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 return new S3Response
                 {
                     Status = HttpStatusCode.InternalServerError,
-                    Message = e.Message
+                    Message = "Bucket Name is Required"
                 };
             }
 
             return new S3Response
             {
-                Status = HttpStatusCode.InternalServerError,
-                Message = "Bucket Already Exists"
+                Status = HttpStatusCode.Conflict,
+                Message = "Bucket Already Exists in region"
             };
         }
     }
