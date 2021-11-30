@@ -36,12 +36,8 @@ namespace FileUpload
             });
 
             //CORS
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+            services.AddCors(c => {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
             //Swagger
@@ -62,7 +58,7 @@ namespace FileUpload
 
             app.UseRouting();
 
-            app.UseCors("CorsPolicy");
+            app.UseCors(c => c.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseAuthorization();
 

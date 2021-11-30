@@ -551,11 +551,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\FileUpload\\FileUpload.csproj",
+      "projectUniqueName": "D:\\FileUpload\\FileUpload.csproj",
       "projectName": "FileUpload",
-      "projectPath": "d:\\FileUpload\\FileUpload.csproj",
+      "projectPath": "D:\\FileUpload\\FileUpload.csproj",
       "packagesPath": "C:\\Users\\shind\\.nuget\\packages\\",
-      "outputPath": "d:\\FileUpload\\obj\\",
+      "outputPath": "D:\\FileUpload\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\shind\\AppData\\Roaming\\NuGet\\NuGet.Config"

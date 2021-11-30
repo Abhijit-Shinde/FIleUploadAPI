@@ -51,8 +51,16 @@ namespace FileUpload.Controllers
             }
 
             byte[] fileBytes = new Byte[file.Length];
-            file.OpenReadStream().Read(fileBytes, 0, Int32.Parse(file.Length.ToString()));
-            
+
+            var path = Path.Combine(  
+                     Directory.GetCurrentDirectory(),file.FileName);
+
+            var memory = new MemoryStream();  
+            using (var stream = new FileStream(path, FileMode.Open))  
+            {  
+                await stream.CopyToAsync(memory);  
+            }
+
             long contentLength = new FileInfo(file.FileName).Length;
             long partSize = 30 * (long)Math.Pow(2, 20);
 
