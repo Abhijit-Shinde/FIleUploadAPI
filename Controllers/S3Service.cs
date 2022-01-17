@@ -159,6 +159,14 @@ namespace FileUpload.Controllers
                     };
                 }
             }
+            catch (AmazonS3Exception e)
+            {
+                return new S3Response
+                {
+                    Status = e.StatusCode,
+                    Message = "Bucket Name with Hyphen, UnderScore or UpperCase letters is not allowed"
+                };
+            }
             catch(Exception)
             {
                 return new S3Response
