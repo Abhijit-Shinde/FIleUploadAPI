@@ -50,15 +50,13 @@ namespace FileUpload.Controllers
                 };
             }
 
-            byte[] fileBytes = new Byte[file.Length];
-
             var path = Path.Combine(  
                      Directory.GetCurrentDirectory(),file.FileName);
 
-            var memory = new MemoryStream();  
-            using (var stream = new FileStream(path, FileMode.Open))  
+            //var memory = new MemoryStream();  
+            using (var stream = new FileStream(path, FileMode.OpenOrCreate))  
             {  
-                await stream.CopyToAsync(memory);  
+                await file.CopyToAsync(stream);  
             }
 
             long contentLength = new FileInfo(file.FileName).Length;
